@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhishu - Cute Couple & Bestie Haven</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        pastel: {
+                            pink: '#FFB7B2',
+                            softpink: '#FFDAC1',
+                            lavender: '#E2F0CB',
+                            purple: '#D4A5A5',
+                            blue: '#B5EAD7',
+                            cream: '#FFF5EB',
+                            darkbg: '#1A1B26',
+                            darkcard: '#24283B'
+                        }
+                    },
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        quicksand: ['Quicksand', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        h1, h2, h3, .font-cute {
+            font-family: 'Fredoka', cursive;
+        }
+
+        /* Floating background particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatUp 8s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0.5) rotate(0deg);
+                opacity: 0;
+            }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% {
+                transform: translateY(-10vh) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Glassmorphism styling */
+        .glass {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+        }
+
+        .dark .glass {
+            background: rgba(36, 40, 59, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFB7B2;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-100 via-purple-50 to-blue-100 dark:from-gray-900 dark:via-purple-950 dark:to-slate-900 min-h-screen text-gray-800 dark:text-gray-100 flex flex-col justify-between select-none transition-colors duration-300">
+
+    <!-- Floating Heart & Sparkle Particles Layer -->
+    <div id="particle-container" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
+
+    <!-- Header Navigation Bar -->
+    <header class="sticky top-0 z-40 glass shadow-sm px-4 py-3 sm:px-8 flex justify-between items-center rounded-b-2xl">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('pet')">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-400 to-purple-400 flex items-center justify-center text-white text-xl shadow-lg animate-bounce">
+                <i class="fa-solid fa-heart"></i>
+            </div>
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent">Abhishu 💕</h1>
+                <p class="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">Our Special Couple & Bestie World</p>
+            </div>
+        </div>
+
+        <!-- Right Header Utility Buttons -->
+        <div class="flex items-center space-x-2">
+            <!-- Boredom Button -->
+            <button onclick="triggerBoredomFun()" class="px-3 py-1.5 rounded-full bg-gradient-to-r from-yellow-400 to-amber-500 text-white font-bold text-xs shadow-md hover:scale-105 active:scale-95 transition flex items-center gap-1.5 animate-pulse">
+                <i class="fa-solid fa-face-laugh-wink"></i> I'm Bored!
+            </button>
+            <!-- Dark Mode Toggle -->
+            <button onclick="toggleDarkMode()" class="p-2.5 rounded-full bg-white/80 dark:bg-gray-800 text-gray-700 dark:text-yellow-300 shadow-md hover:scale-110 active:scale-95 transition">
+                <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
+            </button>
+            <!-- Mute/Sound Toggle -->
+            <button onclick="toggleMute()" id="mute-btn" class="p-2.5 rounded-full bg-white/80 dark:bg-gray-800 text-pink-500 shadow-md hover:scale-110 active:scale-95 transition">
+                <i id="mute-icon" class="fa-solid fa-volume-high text-sm"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Navigation Bar -->
+    <nav class="flex justify-center gap-1 sm:gap-2 p-2 max-w-2xl mx-auto my-2 z-30 relative overflow-x-auto">
+        <button onclick="switchTab('pet')" id="nav-pet" class="nav-btn px-3 py-2 rounded-2xl text-xs sm:text-sm font-bold bg-pink-500 text-white shadow-md flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-paw"></i> Mascot
+        </button>
+        <button onclick="switchTab('game')" id="nav-game" class="nav-btn px-3 py-2 rounded-2xl text-xs sm:text-sm font-bold bg-white/70 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-pink-100 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-gamepad"></i> Tic-Tac-Toe
+        </button>
+        <button onclick="switchTab('vault')" id="nav-vault" class="nav-btn px-3 py-2 rounded-2xl text-xs sm:text-sm font-bold bg-white/70 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-pink-100 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-vault"></i> Secret Vault
+        </button>
+        <button onclick="switchTab('chat')" id="nav-chat" class="nav-btn px-3 py-2 rounded-2xl text-xs sm:text-sm font-bold bg-white/70 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-pink-100 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-comments"></i> Chat
+        </button>
+        <button onclick="switchTab('wheel')" id="nav-wheel" class="nav-btn px-3 py-2 rounded-2xl text-xs sm:text-sm font-bold bg-white/70 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-pink-100 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-dharmachakra"></i> Decision Wheel
+        </button>
+        <button onclick="switchTab('notes')" id="nav-notes" class="nav-btn px-3 py-2 rounded-2xl text-xs sm:text-sm font-bold bg-white/70 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-pink-100 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-sticky-note"></i> Notes
+        </button>
+    </nav>
+
+    <!-- Main Dynamic Content Container -->
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 z-10 relative">
+
+        <!-- TAB 1: Mascot Pet (Mochii) -->
+        <section id="tab-pet" class="tab-content space-y-6">
+            <div class="glass rounded-3xl p-6 sm:p-8 text-center shadow-xl relative overflow-hidden">
+                <div class="absolute top-4 right-4 bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-300 text-xs px-3 py-1.5 rounded-full font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-bolt text-yellow-400"></i> Level: <span id="pet-level">1</span>
+                </div>
+
+                <h2 class="text-2xl sm:text-3xl font-bold text-pink-600 dark:text-pink-400 mb-1">Mochii 🐾</h2>
+                <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-6">Abhishu's Virtual Mascot! Tap Mochii to share some love!</p>
+
+                <div class="relative w-48 h-48 mx-auto my-4 cursor-pointer group" onclick="petMochii(event)">
+                    <div class="absolute inset-0 bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300 dark:from-pink-800 dark:to-purple-900 rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition duration-500"></div>
+
+                    <!-- SVG Mascot -->
+                    <div id="pet-avatar" class="relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 hover:scale-110">
+                        <svg viewBox="0 0 200 200" class="w-44 h-44 drop-shadow-xl">
+                            <circle cx="55" cy="55" r="28" fill="#FFB7B2"/>
+                            <circle cx="55" cy="55" r="16" fill="#FFDAC1"/>
+                            <circle cx="145" cy="55" r="28" fill="#FFB7B2"/>
+                            <circle cx="145" cy="55" r="16" fill="#FFDAC1"/>
+                            <circle cx="100" cy="110" r="70" fill="#FFE5D9"/>
+                            <circle cx="65" cy="120" r="12" fill="#FFB7B2" opacity="0.6"/>
+                            <circle cx="135" cy="120" r="12" fill="#FFB7B2" opacity="0.6"/>
+                            <ellipse cx="75" cy="100" rx="6" ry="8" fill="#4A4E69"/>
+                            <ellipse cx="125" cy="100" rx="6" ry="8" fill="#4A4E69"/>
+                            <circle cx="73" cy="97" r="2" fill="#FFF"/>
+                            <circle cx="123" cy="97" r="2" fill="#FFF"/>
+                            <polygon points="100,110 94,104 106,104" fill="#4A4E69"/>
+                            <path d="M 92 116 Q 100 124 108 116" stroke="#4A4E69" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+
+                    <div id="pet-speech" class="absolute -top-6 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-800 text-pink-600 dark:text-pink-300 text-xs px-3 py-1.5 rounded-2xl shadow-lg border border-pink-200 dark:border-pink-800 transition-all opacity-0 transform translate-y-2 pointer-events-none whitespace-nowrap font-bold">
+                        Welcome to Abhishu! 💕
+                    </div>
+                </div>
+
+                <div class="max-w-xs mx-auto space-y-2 my-4">
+                    <div class="flex justify-between text-xs font-semibold">
+                        <span>Happiness Level</span>
+                        <span id="pet-happiness-text">80%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 h-3 rounded-full overflow-hidden p-0.5">
+                        <div id="pet-happiness-bar" class="bg-gradient-to-r from-pink-400 to-red-400 h-full rounded-full transition-all duration-500" style="width: 80%"></div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center gap-3 mt-6 flex-wrap">
+                    <button onclick="interactPet('feed')" class="px-4 py-2.5 rounded-2xl bg-pink-500 hover:bg-pink-600 text-white font-medium text-sm shadow-md transition transform active:scale-95 flex items-center gap-2">
+                        <i class="fa-solid fa-cookie-bite"></i> Feed Cake
+                    </button>
+                    <button onclick="interactPet('play')" class="px-4 py-2.5 rounded-2xl bg-purple-500 hover:bg-purple-600 text-white font-medium text-sm shadow-md transition transform active:scale-95 flex items-center gap-2">
+                        <i class="fa-solid fa-icons"></i> Play Toy
+                    </button>
+                    <button onclick="interactPet('hug')" class="px-4 py-2.5 rounded-2xl bg-indigo-500 hover:bg-indigo-600 text-white font-medium text-sm shadow-md transition transform active:scale-95 flex items-center gap-2">
+                        <i class="fa-solid fa-hands-holding-child"></i> Warm Hug
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: Cute Tic-Tac-Toe Game -->
+        <section id="tab-game" class="tab-content hidden space-y-6">
+            <div class="glass rounded-3xl p-6 sm:p-8 shadow-xl text-center">
+                <h2 class="text-2xl sm:text-3xl font-bold text-pink-600 dark:text-pink-400 mb-1">Cute Tic-Tac-Toe 🎮</h2>
+                <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-6">Play with your couple partner or bestie!</p>
+
+                <!-- Scoreboard -->
+                <div class="flex justify-center items-center gap-6 mb-6">
+                    <div class="bg-pink-100 dark:bg-pink-950/50 p-3 rounded-2xl min-w-[100px]">
+                        <span id="p1-emoji-display" class="text-2xl">❤️</span>
+                        <div id="p1-score" class="text-xl font-bold text-pink-600 dark:text-pink-400">0</div>
+                    </div>
+                    <div class="text-xs font-bold text-gray-400">VS</div>
+                    <div class="bg-purple-100 dark:bg-purple-950/50 p-3 rounded-2xl min-w-[100px]">
+                        <span id="p2-emoji-display" class="text-2xl">🍕</span>
+                        <div id="p2-score" class="text-xl font-bold text-purple-600 dark:text-purple-400">0</div>
+                    </div>
+                </div>
+
+                <!-- Turn Indicator -->
+                <div id="ttt-status" class="text-sm font-bold text-gray-700 dark:text-gray-200 mb-4 bg-white/50 dark:bg-gray-800/50 py-2 rounded-xl inline-block px-6">
+                    Player 1's Turn (❤️)
+                </div>
+
+                <!-- Grid -->
+                <div class="grid grid-cols-3 gap-3 max-w-xs mx-auto mb-6">
+                    <button onclick="makeTTTMove(0)" class="ttt-cell h-24 bg-white/80 dark:bg-gray-800/80 rounded-2xl text-4xl flex items-center justify-center shadow hover:bg-pink-50 dark:hover:bg-gray-700 transition active:scale-95"></button>
+                    <button onclick="makeTTTMove(1)" class="ttt-cell h-24 bg-white/80 dark:bg-gray-800/80 rounded-2xl text-4xl flex items-center justify-center shadow hover:bg-pink-50 dark:hover:bg-gray-700 transition active:scale-95"></button>
+                    <button onclick="makeTTTMove(2)" class="ttt-cell h-24 bg-white/80 dark:bg-gray-800/80 rounded-2xl text-4xl flex items-center justify-center shadow hover:bg-pink-50 dark:hover:bg-gray-700 transition active:scale-95"></button>
+                    <button onclick="makeTTTMove(3)" class="ttt-cell h-24 bg-white/80 dark:bg-gray-800/80 rounded-2xl text-4xl flex items-center justify-center shadow hover:bg-pink-50 dark:hover:bg-gray-700 transition active:scale-95"></button>
+                    <button onclick="makeTTTMove(4)" class="ttt-cell h-24 bg-white/80 dark:bg-gray-800/80 rounded-2xl text-4xl flex items-center justify-center shadow hover:bg-pink-50 dark:hover:bg-gray-700 transition active:scale-95"></button>
+                    <button onclick="makeTTTMove(5)" class="ttt-cell h-24 bg-white/80 dark:bg-gray-800/80 rounded-2xl text-4xl flex items-center justify-center shadow hover:bg-pink-50 dark:hover:bg-gray-700 transition active:scale-95"></button>
+                    <button onclick="makeTTTMove(6)" class="ttt-cell h-24 bg-white/80 dark:bg-gray-800/80 rounded-2xl text-4xl flex items-center justify-center shadow hover:bg-pink-50 dark:hover:bg-gray-700 transition active:scale-95"></button>
+                    <button onclick="makeTTTMove(7)" class="ttt-cell h-24 bg-white/80 dark:bg-gray-800/80 rounded-2xl text-4xl flex items-center justify-center shadow hover:bg-pink-50 dark:hover:bg-gray-700 transition active:scale-95"></button>
+                    <button onclick="makeTTTMove(8)" class="ttt-cell h-24 bg-white/80 dark:bg-gray-800/80 rounded-2xl text-4xl flex items-center justify-center shadow hover:bg-pink-50 dark:hover:bg-gray-700 transition active:scale-95"></button>
+                </div>
+
+                <div class="flex justify-center gap-3">
+                    <button onclick="resetTTTBoard()" class="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-xs shadow-md hover:opacity-95 transition">
+                        Restart Game 🔄
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: Secret PIN Photo Vault -->
+        <section id="tab-vault" class="tab-content hidden space-y-6">
+            <div class="glass rounded-3xl p-6 sm:p-8 shadow-xl">
+                <!-- PIN Unlock Screen -->
+                <div id="vault-lock-screen" class="text-center py-8 max-w-sm mx-auto space-y-4">
+                    <div class="w-16 h-16 bg-pink-100 dark:bg-pink-900/50 rounded-full flex items-center justify-center mx-auto text-pink-500 text-2xl animate-pulse">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Secret Photo Vault 🔒</h2>
+                    <p class="text-xs text-gray-500">Enter PIN (Default PIN: <span class="font-bold text-pink-500">1234</span>)</p>
+
+                    <input type="password" id="vault-pin-input" maxlength="4" placeholder="****" class="w-36 text-center text-2xl tracking-widest px-4 py-2.5 rounded-2xl border border-pink-200 dark:border-gray-700 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-400">
+
+                    <div>
+                        <button onclick="unlockVault()" class="px-6 py-2.5 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-2xl text-sm shadow-md transition">
+                            Unlock Gallery ✨
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Vault Content Screen -->
+                <div id="vault-content-screen" class="hidden space-y-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-2xl font-bold text-purple-600 dark:text-purple-400">Abhishu Secret Memories 🖼️</h2>
+                            <p class="text-xs text-gray-500">Photos saved securely in your browser!</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <label class="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white font-bold text-xs rounded-2xl cursor-pointer shadow flex items-center gap-1.5">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Upload Photo
+                                <input type="file" id="vault-file-input" accept="image/*" class="hidden" onchange="uploadVaultPhoto(event)">
+                            </label>
+                            <button onclick="lockVault()" class="p-2 bg-gray-200 dark:bg-gray-700 rounded-2xl text-gray-600 dark:text-gray-300 hover:bg-gray-300">
+                                <i class="fa-solid fa-lock"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Photos Grid -->
+                    <div id="vault-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-4"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: Private Chat Simulator -->
+        <section id="tab-chat" class="tab-content hidden space-y-6">
+            <div class="glass rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col h-[500px]">
+                <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-pink-400 flex items-center justify-center text-white text-lg font-bold">
+                            💖
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-base">Abhishu Secret Chat</h3>
+                            <p class="text-xs text-green-500 flex items-center gap-1">● Online & Cute</p>
+                        </div>
+                    </div>
+                    <button onclick="clearChat()" class="text-xs text-gray-400 hover:text-red-400">
+                        <i class="fa-solid fa-trash"></i> Clear
+                    </button>
+                </div>
+
+                <!-- Chat Messages Box -->
+                <div id="chat-box" class="flex-1 overflow-y-auto my-4 space-y-3 pr-2">
+                    <div class="flex justify-start">
+                        <div class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-2xl px-4 py-2 text-xs sm:text-sm max-w-[80%]">
+                            Hey bestie! Welcome to our secret chat box in Abhishu! 🌸
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Box -->
+                <div class="flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Type a cute secret message..." class="flex-1 px-4 py-2.5 rounded-2xl text-xs sm:text-sm border border-gray-200 dark:border-gray-700 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-pink-400" onkeypress="handleChatEnter(event)">
+                    <button onclick="sendChatMessage()" class="px-5 py-2.5 rounded-2xl bg-pink-500 hover:bg-pink-600 text-white font-bold text-sm shadow transition">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: Decision Wheel -->
+        <section id="tab-wheel" class="tab-content hidden space-y-6">
+            <div class="glass rounded-3xl p-6 sm:p-8 shadow-xl text-center">
+                <h2 class="text-2xl sm:text-3xl font-bold text-purple-600 dark:text-purple-400 mb-1">Hangout Decision Wheel 🎡</h2>
+                <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-6">Can't decide what to do today? Spin the wheel!</p>
+
+                <div class="relative w-64 h-64 sm:w-72 sm:h-72 mx-auto my-4">
+                    <!-- Wheel Canvas -->
+                    <canvas id="wheel-canvas" width="300" height="300" class="w-full h-full rounded-full shadow-lg border-4 border-white dark:border-gray-800"></canvas>
+                    <!-- Pointer -->
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[20px] border-t-red-500 z-10 drop-shadow"></div>
+                </div>
+
+                <div class="mt-6">
+                    <button onclick="spinWheel()" id="spin-btn" class="px-8 py-3 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold text-sm shadow-lg hover:scale-105 active:scale-95 transition">
+                        Spin the Wheel! ✨
+                    </button>
+                </div>
+
+                <div id="wheel-result" class="mt-4 text-base font-bold text-pink-600 dark:text-pink-300 min-h-[24px]"></div>
+            </div>
+        </section>
+
+        <!-- TAB 6: Sticky Notes -->
+        <section id="tab-notes" class="tab-content hidden space-y-6">
+            <div class="glass rounded-3xl p-6 sm:p-8 shadow-xl">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-pink-600 dark:text-pink-400">Memory Notes Board 📝</h2>
+                        <p class="text-xs text-gray-500">Leave cute sticky notes for each other!</p>
+                    </div>
+                    <button onclick="addNotePrompt()" class="px-4 py-2 bg-pink-500 hover:bg-pink-600 text-white font-bold text-xs rounded-2xl shadow transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-plus"></i> Add Note
+                    </button>
+                </div>
+
+                <div id="notes-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Dynamic Notes -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Boredom Modal / Popup -->
+    <div id="boredom-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden p-4">
+        <div class="glass rounded-3xl max-w-md w-full p-6 text-center space-y-4 relative shadow-2xl animate-scaleIn">
+            <button onclick="closeBoredomModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-4xl">🎉</div>
+            <h3 id="boredom-title" class="text-xl font-bold text-pink-600 dark:text-pink-400">Boredom Buster!</h3>
+            <div id="boredom-content" class="text-sm text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-gray-800/50 p-4 rounded-2xl min-h-[80px] flex items-center justify-center font-medium">
+                Generating fun...
+            </div>
+            <button onclick="triggerBoredomFun()" class="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-yellow-400 to-amber-500 text-white font-bold text-xs shadow-md">
+                Give Me Another! 🎲
+            </button>
+        </div>
+    </div>
+
+    <!-- Audio Effects Engine (Web Audio API) -->
+    <script>
+        const AudioEngine = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            playPop() {
+                if (isMuted) return;
+                this.init();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.1);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.1);
+            },
+            playWin() {
+                if (isMuted) return;
+                this.init();
+                const notes = [261.63, 329.63, 392.00, 523.25];
+                notes.forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.1);
+                    gain.gain.setValueAtTime(0.2, this.ctx.currentTime + idx * 0.1);
+                    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + idx * 0.1 + 0.2);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(this.ctx.currentTime + idx * 0.1);
+                    osc.stop(this.ctx.currentTime + idx * 0.1 + 0.2);
+                });
+            }
+        };
+
+        // App States
+        let isMuted = false;
+        let petHappiness = 80;
+        let petLevel = 1;
+        let currentTab = 'pet';
+
+        // Tic Tac Toe State
+        let tttBoard = Array(9).fill(null);
+        let tttTurn = 'p1'; // p1 or p2
+        let p1Score = 0;
+        let p2Score = 0;
+        const p1Emoji = '❤️';
+        const p2Emoji = '🍕';
+
+        // Secret Vault State
+        const vaultPIN = '1234';
+        let vaultPhotos = JSON.parse(localStorage.getItem('abhishu_photos') || '[]');
+
+        // Decision Wheel State
+        const wheelItems = ['Pizza Night 🍕', 'Movie Marathon 🎬', 'Ice Cream Walk 🍦', 'Video Call 📱', 'Board Games 🎲', 'Late Drive 🚗'];
+        let startAngle = 0;
+        let isSpinning = false;
+
+        // Sticky Notes State
+        let stickyNotes = JSON.parse(localStorage.getItem('abhishu_notes') || JSON.stringify([
+            { id: 1, text: "Welcome to Abhishu! You are my favorite person! ❤️", color: "bg-pink-100 dark:bg-pink-900/40 border-pink-300" },
+            { id: 2, text: "Don't forget to play Tic-Tac-Toe today! 🍕", color: "bg-purple-100 dark:bg-purple-900/40 border-purple-300" }
+        ]));
+
+        // Initialize App
+        window.onload = function() {
+            createParticles();
+            renderVaultPhotos();
+            renderNotes();
+            drawWheel();
+            resetTTTBoard();
+        };
+
+        // Tab Switcher
+        function switchTab(tabId) {
+            AudioEngine.playPop();
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(el => {
+                el.classList.remove('bg-pink-500', 'text-white', 'shadow-md');
+                el.classList.add('bg-white/70', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-300');
+            });
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.remove('bg-white/70', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-300');
+                activeNav.classList.add('bg-pink-500', 'text-white', 'shadow-md');
+            }
+
+            if (tabId === 'wheel') setTimeout(drawWheel, 50);
+        }
+
+        // Particle System
+        function createParticles() {
+            const container = document.getElementById('particle-container');
+            const icons = ['❤️', '✨', '🌸', '⭐', '💖'];
+            for (let i = 0; i < 15; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle text-xl';
+                p.innerText = icons[Math.floor(Math.random() * icons.length)];
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDelay = (Math.random() * 8) + 's';
+                p.style.animationDuration = (6 + Math.random() * 6) + 's';
+                container.appendChild(p);
+            }
+        }
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            const icon = document.getElementById('theme-icon');
+            if (document.documentElement.classList.contains('dark')) {
+                icon.className = 'fa-solid fa-sun text-yellow-300';
+            } else {
+                icon.className = 'fa-solid fa-moon text-gray-700';
+            }
+        }
+
+        // Sound Mute Toggle
+        function toggleMute() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('mute-icon');
+            icon.className = isMuted ? 'fa-solid fa-volume-xmark text-gray-400' : 'fa-solid fa-volume-high text-pink-500';
+        }
+
+        // Pet Interactions
+        function petMochii(e) {
+            AudioEngine.playPop();
+            petHappiness = Math.min(100, petHappiness + 5);
+            updatePetUI();
+
+            const speech = document.getElementById('pet-speech');
+            const phrases = ["Abhishu forever! 💕", "I love you both! 🐾", "Purrrr... ✨", "You are the best! 🥰"];
+            speech.innerText = phrases[Math.floor(Math.random() * phrases.length)];
+            speech.style.opacity = '1';
+            speech.style.transform = 'translate(-50%, -10px)';
+
+            setTimeout(() => {
+                speech.style.opacity = '0';
+                speech.style.transform = 'translate(-50%, 0px)';
+            }, 2000);
+        }
+
+        function interactPet(type) {
+            AudioEngine.playPop();
+            if (type === 'feed') petHappiness = Math.min(100, petHappiness + 15);
+            if (type === 'play') petHappiness = Math.min(100, petHappiness + 20);
+            if (type === 'hug') petHappiness = Math.min(100, petHappiness + 25);
+
+            if (petHappiness >= 100) {
+                petHappiness = 50;
+                petLevel++;
+                document.getElementById('pet-level').innerText = petLevel;
+                AudioEngine.playWin();
+            }
+            updatePetUI();
+        }
+
+        function updatePetUI() {
+            document.getElementById('pet-happiness-bar').style.width = petHappiness + '%';
+            document.getElementById('pet-happiness-text').innerText = petHappiness + '%';
+        }
+
+        // Tic-Tac-Toe Game Logic
+        function makeTTTMove(index) {
+            if (tttBoard[index] !== null) return;
+            AudioEngine.playPop();
+
+            tttBoard[index] = tttTurn;
+            const cells = document.querySelectorAll('.ttt-cell');
+            cells[index].innerText = tttTurn === 'p1' ? p1Emoji : p2Emoji;
+
+            if (checkTTTWin()) {
+                AudioEngine.playWin();
+                const winner = tttTurn === 'p1' ? 'Player 1 (❤️)' : 'Player 2 (🍕)';
+                document.getElementById('ttt-status').innerText = `${winner} Wins! 🎉`;
+                if (tttTurn === 'p1') p1Score++; else p2Score++;
+                document.getElementById('p1-score').innerText = p1Score;
+                document.getElementById('p2-score').innerText = p2Score;
+                disableTTTBoard();
+                return;
+            }
+
+            if (!tttBoard.includes(null)) {
+                document.getElementById('ttt-status').innerText = "It's a Tie! 🤝";
+                return;
+            }
+
+            tttTurn = tttTurn === 'p1' ? 'p2' : 'p1';
+            document.getElementById('ttt-status').innerText = `Player ${tttTurn === 'p1' ? '1' : '2'}'s Turn (${tttTurn === 'p1' ? p1Emoji : p2Emoji})`;
+        }
+
+        function checkTTTWin() {
+            const wins = [
+                [0,1,2], [3,4,5], [6,7,8],
+                [0,3,6], [1,4,7], [2,5,8],
+                [0,4,8], [2,4,6]
+            ];
+            return wins.some(comb => {
+                return comb.every(idx => tttBoard[idx] === tttTurn);
+            });
+        }
+
+        function disableTTTBoard() {
+            document.querySelectorAll('.ttt-cell').forEach(cell => cell.onclick = null);
+        }
+
+        function resetTTTBoard() {
+            tttBoard = Array(9).fill(null);
+            tttTurn = 'p1';
+            document.getElementById('ttt-status').innerText = `Player 1's Turn (${p1Emoji})`;
+            const cells = document.querySelectorAll('.ttt-cell');
+            cells.forEach((cell, idx) => {
+                cell.innerText = '';
+                cell.onclick = () => makeTTTMove(idx);
+            });
+        }
+
+        // Secret Photo Vault Logic
+        function unlockVault() {
+            const input = document.getElementById('vault-pin-input').value;
+            if (input === vaultPIN) {
+                AudioEngine.playWin();
+                document.getElementById('vault-lock-screen').classList.add('hidden');
+                document.getElementById('vault-content-screen').classList.remove('hidden');
+            } else {
+                AudioEngine.playPop();
+                alert('Wrong PIN! Default PIN is 1234');
+            }
+        }
+
+        function lockVault() {
+            document.getElementById('vault-pin-input').value = '';
+            document.getElementById('vault-lock-screen').classList.remove('hidden');
+            document.getElementById('vault-content-screen').classList.add('hidden');
+        }
+
+        function uploadVaultPhoto(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                vaultPhotos.push(evt.target.result);
+                localStorage.setItem('abhishu_photos', JSON.stringify(vaultPhotos));
+                renderVaultPhotos();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function renderVaultPhotos() {
+            const grid = document.getElementById('vault-grid');
+            grid.innerHTML = '';
+            if (vaultPhotos.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-8 text-gray-400 text-xs">No photos uploaded yet! Tap Upload Photo to add memories.</div>`;
+                return;
+            }
+            vaultPhotos.forEach((src, idx) => {
+                const div = document.createElement('div');
+                div.className = "relative rounded-2xl overflow-hidden shadow-md group border border-pink-200 dark:border-gray-700 h-36";
+                div.innerHTML = `
+                    <img src="${src}" class="w-full h-full object-cover">
+                    <button onclick="deleteVaultPhoto(${idx})" class="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full text-xs opacity-0 group-hover:opacity-100 transition">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        function deleteVaultPhoto(idx) {
+            vaultPhotos.splice(idx, 1);
+            localStorage.setItem('abhishu_photos', JSON.stringify(vaultPhotos));
+            renderVaultPhotos();
+        }
+
+        // Private Chat Simulator
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            AudioEngine.playPop();
+            const box = document.getElementById('chat-box');
+
+            // User Message
+            const myMsg = document.createElement('div');
+            myMsg.className = 'flex justify-end';
+            myMsg.innerHTML = `<div class="bg-pink-500 text-white rounded-2xl px-4 py-2 text-xs sm:text-sm max-w-[80%]">${text}</div>`;
+            box.appendChild(myMsg);
+
+            input.value = '';
+            box.scrollTop = box.scrollHeight;
+
+            // Auto Cute Reply
+            setTimeout(() => {
+                const replies = ["Aww cute! 💕", "I agree! ✨", "You're amazing! 🥰", "Bestie power! ⚡", "Love this! ❤️"];
+                const replyText = replies[Math.floor(Math.random() * replies.length)];
+
+                const autoMsg = document.createElement('div');
+                autoMsg.className = 'flex justify-start';
+                autoMsg.innerHTML = `<div class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-2xl px-4 py-2 text-xs sm:text-sm max-w-[80%]">${replyText}</div>`;
+                box.appendChild(autoMsg);
+                box.scrollTop = box.scrollHeight;
+                AudioEngine.playPop();
+            }, 800);
+        }
+
+        function handleChatEnter(e) {
+            if (e.key === 'Enter') sendChatMessage();
+        }
+
+        function clearChat() {
+            document.getElementById('chat-box').innerHTML = '';
+        }
+
+        // Decision Wheel Canvas Drawing & Logic
+        function drawWheel() {
+            const canvas = document.getElementById('wheel-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const numOptions = wheelItems.length;
+            const arcSize = (2 * Math.PI) / numOptions;
+            const colors = ['#FFB7B2', '#FFDAC1', '#E2F0CB', '#B5EAD7', '#C7CEEA', '#F3D1F4'];
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < numOptions; i++) {
+                const angle = startAngle + i * arcSize;
+                ctx.beginPath();
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.moveTo(150, 150);
+                ctx.arc(150, 150, 140, angle, angle + arcSize);
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(150, 150);
+                ctx.rotate(angle + arcSize / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#4A4E69";
+                ctx.font = "bold 12px Quicksand";
+                ctx.fillText(wheelItems[i], 120, 5);
+                ctx.restore();
+            }
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            AudioEngine.playPop();
+            document.getElementById('wheel-result').innerText = 'Spinning... 🌀';
+
+            const spinAngle = Math.random() * 2000 + 2000;
+            let currentSpin = 0;
+
+            const timer = setInterval(() => {
+                currentSpin += 30;
+                startAngle += (Math.PI / 180) * 20;
+                drawWheel();
+
+                if (currentSpin >= spinAngle) {
+                    clearInterval(timer);
+                    isSpinning = false;
+                    AudioEngine.playWin();
+
+                    const degrees = (startAngle * 180 / Math.PI) % 360;
+                    const index = Math.floor((360 - (degrees % 360)) / (360 / wheelItems.length)) % wheelItems.length;
+                    document.getElementById('wheel-result').innerText = `Result: ${wheelItems[index]} 🎉`;
+                }
+            }, 30);
+        }
+
+        // Memory Sticky Notes Board
+        function renderNotes() {
+            const grid = document.getElementById('notes-grid');
+            grid.innerHTML = '';
+            stickyNotes.forEach(note => {
+                const div = document.createElement('div');
+                div.className = `p-4 rounded-2xl border ${note.color} shadow-sm relative group flex flex-col justify-between min-h-[120px]`;
+                div.innerHTML = `
+                    <p class="text-xs sm:text-sm font-medium leading-relaxed">${note.text}</p>
+                    <button onclick="deleteNote(${note.id})" class="absolute bottom-2 right-2 text-gray-400 hover:text-red-500 text-xs opacity-0 group-hover:opacity-100 transition">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        function addNotePrompt() {
+            const text = prompt("Enter your cute note for Abhishu:");
+            if (!text) return;
+            const colors = [
+                "bg-pink-100 dark:bg-pink-900/40 border-pink-300",
+                "bg-purple-100 dark:bg-purple-900/40 border-purple-300",
+                "bg-blue-100 dark:bg-blue-900/40 border-blue-300",
+                "bg-green-100 dark:bg-green-900/40 border-green-300"
+            ];
+            const newNote = {
+                id: Date.now(),
+                text: text,
+                color: colors[Math.floor(Math.random() * colors.length)]
+            };
+            stickyNotes.push(newNote);
+            localStorage.setItem('abhishu_notes', JSON.stringify(stickyNotes));
+            renderNotes();
+            AudioEngine.playPop();
+        }
+
+        function deleteNote(id) {
+            stickyNotes = stickyNotes.filter(n => n.id !== id);
+            localStorage.setItem('abhishu_notes', JSON.stringify(stickyNotes));
+            renderNotes();
+        }
+
+        // Boredom Buster Feature
+        function triggerBoredomFun() {
+            AudioEngine.playPop();
+            const dares = [
+                "🎭 Do your best impression of your favorite cartoon character right now!",
+                "📸 Send a funny face selfie to your bestie in 10 seconds!",
+                "🍕 Truth or Dare: Tell your partner your most embarrassing childhood moment!",
+                "🎨 Draw a quick 30-second portrait of your bestie and show them!",
+                "🎵 Sing the chorus of your favorite song out loud!"
+            ];
+            const randomDare = dares[Math.floor(Math.random() * dares.length)];
+            document.getElementById('boredom-content').innerText = randomDare;
+            document.getElementById('boredom-modal').classList.remove('hidden');
+        }
+
+        function closeBoredomModal() {
+            document.getElementById('boredom-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
